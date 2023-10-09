@@ -24,6 +24,7 @@ import HelloWorld from '@/components/HelloWorld.vue'
 header {
   line-height: 1.5;
   max-height: 100vh;
+  min-width: none;
 }
 
 .logo {
