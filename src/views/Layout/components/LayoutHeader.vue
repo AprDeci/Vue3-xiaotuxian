@@ -1,5 +1,16 @@
 <script setup>
+import {getCategoryAPI} from '@/apis/layout'
+import {ref,onMounted} from 'vue'
 
+const category = ref([])
+const getCategory = async () => {
+  const res = await getCategoryAPI()
+  category.value = res.result
+}
+
+onMounted(()=>{
+  getCategory()
+})
 </script>
 
 <template>
@@ -9,12 +20,9 @@
         <RouterLink to="/">小兔鲜</RouterLink>
       </h1>
       <ul class="app-header-nav">
-        <li class="home">
-          <RouterLink to="/">首页</RouterLink>
+        <li v-for="item in category" :key="item.id" class="home">
+          <RouterLink to="/">{{ item.name }}</RouterLink>
         </li>
-        <li> <RouterLink to="/">居家</RouterLink> </li>
-        <li> <RouterLink to="/">美食</RouterLink> </li>
-        <li> <RouterLink to="/">服饰</RouterLink> </li>
       </ul>
       <div class="search">
         <i class="iconfont icon-search"></i>
