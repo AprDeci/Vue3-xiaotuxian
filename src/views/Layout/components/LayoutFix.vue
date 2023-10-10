@@ -1,46 +1,19 @@
 <script setup>
  import { useWindowScroll } from '@vueuse/core'
-
 const { x, y } = useWindowScroll()
 
+import { useCategoryStore } from '@/stores/category';
+const categoryStore = useCategoryStore();
 </script>
 
 <template>
-    {{ y }}
   <div class="app-header-sticky" :class="{'show':y>120}">
     <div class="container">
       <RouterLink class="logo" to="/" />
       <!-- 导航区域 -->
       <ul class="app-header-nav ">
-        <li class="home">
-          <RouterLink to="/">首页</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">居家</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">美食</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">服饰</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">母婴</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">个护</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">严选</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">数码</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">运动</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">杂项</RouterLink>
+        <li class="home" v-for="item in categoryStore.category" :key="item.id">
+          <RouterLink to="/">{{item.name}}</RouterLink>
         </li>
       </ul>
 
