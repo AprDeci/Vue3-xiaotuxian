@@ -22,7 +22,7 @@
       </el-tabs>
       <div class="body">
          <!-- 商品列表-->
-      </div>
+      </div class="abc">
     </div>
   </div>
 
