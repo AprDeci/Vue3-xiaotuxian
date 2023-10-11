@@ -1,27 +1,13 @@
 <script setup>
-import {getCategoryAPI} from '@/apis/category'
-import {ref,onMounted} from 'vue'
-import {useRoute} from 'vue-router'
-import {getBannerAPI} from '@/apis/home'
+
+
+import {useCategory} from '@/views/Category/composables/useCategory'
+import {useBanner} from '@/views/Category/composables/useBanner'
 import Goodsitem from '@/views/Home/components/Goodsitem.vue'
-const categoryData = ref({})
-const route = useRoute()
-const getCategory=async()=>{
-    await getCategoryAPI(route.params.id).then(res=>{
-    categoryData.value = res.result
-})}
-onMounted(()=>{
-    getCategory()
-})
-const bannerList = ref([])
-const getBanner = async()=>{
-    const res = await getBannerAPI({distributionSite:"2"})
-    console.log(res);
-    bannerList.value = res.result
-}
-onMounted(() => {
-    getBanner()
-})
+
+
+const categoryData=useCategory()
+const bannerList= useBanner()
 
 </script>
 
@@ -31,7 +17,7 @@ onMounted(() => {
       <!-- 面包屑 -->
       <div class="bread-container">
         <el-breadcrumb separator="!">
-          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '>' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item>{{categoryData.name}}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
@@ -47,7 +33,7 @@ onMounted(() => {
   <h3>全部分类</h3>
   <ul>
     <li v-for="i in categoryData.children" :key="i.id">
-      <RouterLink to="/">
+      <RouterLink :to="`/category/sub/${ i.id }`">
         <img :src="i.picture" />
         <p>{{ i.name }}</p>
       </RouterLink>
@@ -59,7 +45,7 @@ onMounted(() => {
     <h3>- {{ item.name }}-</h3>
   </div>
   <div class="body">
-    <Goodsitem v-for="good in item.goods" :goods="good" :key="good.id" />
+    <Goodsitem v-for="good in item.goods" :good="good" :key="good.id" />
   </div>
 </div>
   </div>
