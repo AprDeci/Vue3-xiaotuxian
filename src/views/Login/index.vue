@@ -1,15 +1,22 @@
 <script setup>
-
 //表单校验(账号名+密码)
 import {ref} from 'vue'
-const from = ref({
-  account:'',
-  password:'',
-  agree:true
+import 'element-plus/theme-chalk/el-message.css' 
+import { ElMessage } from 'element-plus'
+import router from '@/router';
+import{useUserStore} from '@/stores/user'
+
+const userStore = useUserStore()
+
+const form = ref({
+  account: 'heima282',
+  password: 'hm#qd@23!',
+  agree: true
 })
+
 //准备规则对象
 const rules = {
-  account:[
+  account:[ 
     {required:true,message:'用户名不能为空',trigger:'blur'}
   ],
   password:[
@@ -26,6 +33,21 @@ const rules = {
       }
     }}
   ]
+}
+//获取form对象
+const formRef = ref(null)
+
+const doLogin = ()=>{
+  const {account,password} = form.value
+  formRef.value.validate(async(valid)=>{
+    if(valid){
+      //to login
+      await userStore.getUserInfo(account,password)
+      //提示用户,跳转界面
+      ElMessage({type:'success',message:'登录成功'})
+      router.replace('/')
+    }
+  })
 }
 </script>
 
@@ -51,7 +73,7 @@ const rules = {
         </nav>
         <div class="account-box">
           <div class="form">
-            <el-form label-position="right" label-width="60px" :model="form" :rules="rules"
+            <el-form label-position="right" label-width="60px" :model="form" :rules="rules" ref="formRef"
               status-icon>
               <el-form-item prop="account" label="账户">
                 <el-input v-model="form.account"/>
@@ -60,11 +82,11 @@ const rules = {
                 <el-input v-model="form.password"/>
               </el-form-item>
               <el-form-item label-width="22px" prop="agree">
-                <el-checkbox  size="large" :model="form.agree">
+                <el-checkbox  size="large" v-model="form.agree">
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
-              <el-button size="large" class="subBtn">点击登录</el-button>
+              <el-button size="large" class="subBtn" @click="doLogin">点击登录</el-button>
             </el-form>
           </div>
         </div>
