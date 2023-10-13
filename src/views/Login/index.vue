@@ -42,7 +42,7 @@ const doLogin = ()=>{
   formRef.value.validate(async(valid)=>{
     if(valid){
       //to login
-      await userStore.getUserInfo(account,password)
+      await userStore.getUserInfo({account,password})
       //提示用户,跳转界面
       ElMessage({type:'success',message:'登录成功'})
       router.replace('/')
