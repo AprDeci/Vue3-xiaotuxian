@@ -3,6 +3,9 @@ import {ref,onMounted} from 'vue'
 import {getDetail} from '@/apis/details.js'
 import  {useRoute} from 'vue-router'
 import DetailHot from './components/DetailHot.vue'
+import { ElMessage } from 'element-plus';
+import { useCartStore } from '@/stores/cartStore';
+const cartStore = useCartStore()
 const goods = ref([])
 const route = useRoute()
 const getGoods = async()=>{
@@ -16,8 +19,36 @@ onMounted(()=>{
 })
 
 //SKU规格被操作时
+let skuObj = {}
 const skuChange = (sku) =>{
+  skuObj = sku
   console.log(sku)
+}
+
+//count
+const count = ref(1)
+const countChnage=(count)=>{
+  console.log(count)
+}
+
+//添加购物车
+const addCart = ()=>{
+  if(skuObj.skuId){
+    //规格选择 触发action
+    cartStore.addCart({
+      id:goods.value.id,
+      name:goods.value.name,
+      picture:goods.value.picture,
+      price: goods.value.price,
+      count: count.value,
+      skuId:skuObj.skuId,
+      attrsText:skuObj.skuText,
+      selected:true
+    })
+  }else{
+    //非规格选择 提示用户
+    ElMessage.warning('请选择商品规格')
+  }
 }
 </script>
 
@@ -91,10 +122,10 @@ const skuChange = (sku) =>{
               <!-- sku组件 -->
               <XtxSku :goods="goods" @change="skuChange"></Xtxsku>
               <!-- 数据组件 -->
-
+              <el-input-number v-model="count" @change="countChnage" />
               <!-- 按钮组件 -->
               <div>
-                <el-button size="large" class="btn">
+                <el-button size="large" class="btn" @click="addCart">
                   加入购物车
                 </el-button>
               </div>
