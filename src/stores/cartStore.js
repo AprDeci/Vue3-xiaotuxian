@@ -1,7 +1,7 @@
 //封装购物车模块
 
 import { defineStore } from "pinia";
-
+import { ref } from "vue";
 export const useCartStore = defineStore('cart',()=>{
     //1.定义state
     const cartList = ref([])
@@ -17,11 +17,15 @@ export const useCartStore = defineStore('cart',()=>{
         cartList.value.push(goods)
     }
     }
+    const delCart = (skuId)=>{
+        const item= cartList.value.findIndex((item)=>item.skuId===skuId)
+        cartList.value.splice(item,1)
+    }
     return{
         cartList,
-        addCart
-    },{
+        addCart,
+        delCart
+    }},
+    {
         persist:true,
-    }
-
 })

@@ -22,7 +22,6 @@ onMounted(()=>{
 let skuObj = {}
 const skuChange = (sku) =>{
   skuObj = sku
-  console.log(sku)
 }
 
 //count
@@ -34,11 +33,12 @@ const countChnage=(count)=>{
 //添加购物车
 const addCart = ()=>{
   if(skuObj.skuId){
+    console.log(goods)
     //规格选择 触发action
     cartStore.addCart({
       id:goods.value.id,
       name:goods.value.name,
-      picture:goods.value.picture,
+      picture:goods.value.mainPictures[0],
       price: goods.value.price,
       count: count.value,
       skuId:skuObj.skuId,
