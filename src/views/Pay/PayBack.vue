@@ -12,7 +12,7 @@ const getOrderInfo = async()=>{
 
 
 <template>
-  <div class="xtx-pay-page">
+  <div class="xtx-pay-pag11111e">
     <div class="container">
       <!-- 支付结果 -->
       <div class="pay-result">
